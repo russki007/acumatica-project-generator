@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<!--a1[-->
+  <ItemGroup>
+    <None Remove="Features.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Features.xml" />
+  </ItemGroup>
+<!--]-->
+  <ItemGroup>
+   <Reference Include="PX.Std.Common">
+      <HintPath>$(SiteDir)\bin\PX.Common.Std.dll</HintPath>
+    </Reference>
+    <Reference Include="PX.CS.Contracts">
+      <HintPath>$(SiteDir)\bin\PX.CS.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="PX.Data">
+      <HintPath>$(SiteDir)\Bin\PX.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="PX.Common">
+      <HintPath>$(SiteDir)\bin\PX.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="PX.Data.BQL.Fluent">
+      <HintPath>$(SiteDir)\bin\PX.Data.BQL.Fluent.dll</HintPath>
+    </Reference>
+    <Reference Include="PX.Web.Customization">
+      <HintPath>$(SiteDir)\bin\PX.Web.Customization.dll</HintPath>
+    </Reference>
+    <Reference Include="PX.Objects">
+      <HintPath>$(SiteDir)\bin\PX.Objects.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <PropertyGroup>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    <AssemblyName>#PROJECT#</AssemblyName>
+    <RootNamespace>#PROJECT#</RootNamespace>
+  </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <PropertyGroup>
+      <RootDir>$([System.IO.Path]::GetFullPath($(MSBuildProjectDirectory)\..\..))</RootDir>
+    </PropertyGroup>
+    <Exec Command="XCOPY &quot;$(RootDir)\assets\Pages\MA\*.*&quot;  &quot;$(SiteDir)\Pages\MA\&quot; /S /E /H /R /Y /I /D&#xD;&#xA;XCOPY &quot;$(OutDir)*.*&quot;  &quot;$(SiteDir)\Bin&quot; /S /E /H /R /Y /I /D" />
+  </Target>
+</Project>

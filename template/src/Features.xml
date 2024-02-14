@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Features Type="FeatureExtTest.FeaturesSetExt" Key="0">
+	<Feature Name="UsrMyFeature">
+		<Access ScreenID="CR102000"/>
+		<Access ScreenID="TT999999"/>
+		<Access ScreenID="SM201510" ActionName="installLicense"/>
+	</Feature>
+</Features>
