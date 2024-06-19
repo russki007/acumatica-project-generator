@@ -92,7 +92,7 @@ Task("Package")
 	var exitCodeWithArgument = StartProcess(csPackExePath, new ProcessSettings {
              Arguments = new ProcessArgumentBuilder()
 				.Append($"/description \"{packageDescription}\"")
-				.Append($"/website {siteDir}")
+				.Append($"/website \"{siteDir}\"")
 				.Append($"/in {BuildDir} /out {outputPath}/{PackageName}.{version}.zip")
 				.Append($"/include \"{BuildDir}/bin/#PROJECT#.dll\" \"bin\\#PROJECT#.dll\""),
              RedirectStandardOutput = true
