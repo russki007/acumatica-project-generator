@@ -1,13 +1,12 @@
 # #PROJECT# Customization Project
 
 ## Overview
-This project was bootstrapped from the project generator template repository, It offers a customization package scaffold for the Acumatica xRP Framework. Using this scaffold, you can create a standard customization project complete with common framework dependencies, build scripts, and folder layouts assets and some samples
-to get your project up running.
+This project was bootstrapped from the [acuamtica project generator](https://github.com/russki007/acumatica-project-generator) template repository, It offers a customization package scaffold for the Acumatica xRP Framework. Using this scaffold, you can create a standard customization project complete with common framework dependencies, build scripts, folder layout assets and some samples to get your project up and running.
 
 ## Getting Started
 - Clone this repo
-- Configure path to MYOB Advanced Web APP by editing [OpenVS](OpenVS.bat) `ACC_SITE_PATH=<path-to-site>`
-- Ensure path to the devenv.exe is correct. Update this like
+- Configure path to Acumatica Web Site by editing [OpenVS](OpenVS.bat) `ACC_SITE_PATH=<path-to-site>`
+- Ensure the path to the devenv.exe is correct. Update this like
 - Click on [OpenVS](OpenVS.bat) to open VS Solution
 - Build and Run
 
@@ -15,10 +14,10 @@ to get your project up running.
 ```
 .
 |-- Directory.Build.props
-|-- OpenVS.cmd			  <--- ❗IMPORTANT: Open the solution file
+|-- OpenVS.cmd			  <--- IMPORTANT: Open the solution file
 |-- README.md
-|-- artifacts			    <--- Contains build artifacts (customization package)
-|-- assets			      <--- Acumatica Project Customizaton project assets
+|-- artifacts			    <--- Contains build artefacts (customization package)
+|-- assets			      <--- Acumatica Project Customization project assets
 |   `-- Pages
 |-- build.cake			  <--- Cake build file
 |-- build.ps1
@@ -39,13 +38,27 @@ to get your project up running.
 * [Nuget.exe](https://www.nuget.org/downloads)
 * .NET 8.0 SDK
 
+### Build Customization Package using CLI
+To produce a customization package locally, do the following
+- Option 1 -  Using .NET Tool
+  - Restore the tool NuGet packages `dotnet tool restore`
+  - Execute the tool `dotnet cake` or `dotnet cake --PackageVersion=<version>`
+- Option 2 - Using bootstrap script. See (Here)[https://cakebuild.net/docs/running-builds/runners/dotnet-tool#bootstrapping-for.net-tool] for more info.
+  - Configure the path to the Acumatica site using the environment variable SITE_DIR. e.g. `SET SITE_DIR=<path-to-site>`
+  - From the root directory for this customizations, run `.\build.ps1` or `.\build.ps --PackageVersion=<version>`
 
-## Getting Started
-- Clone this repo
-- Configure path to MYOB Advanced Web APP by editing [OpenVS](OpenVS.bat) `ACC_SITE_PATH=<path-to-site>`
-- Ensure path to the devenv.exe is correct.
-- Click on [OpenVS](OpenVS.bat) to open VS Solution
-- Build and Run
+ After the build is successful, the customization package will be available in the `artifacts` directory.  Navigate to the Customization Projects (SM204505) screen and import the package.
+
+### Running Unit Tests
+- Run unitest `dotnet cake --target=UnitTests` or `.\build.ps1 -Target UnitTests`
+
+## Conventions
+1. Graph Extensions - go to Extentions\PMProjectMaintExt
+2. DACs & DAC Extentions -  DAC\MYPESetup, DAC\MYPEAPTran.  Note: NO need to add namespace DAC segment to the namespace, e.g. `CompanyName.ProjectName.DAC`. Doing so creates concise code and does not require the unnecessary import of a namespace.
+3. Both cache extensions (virtual or with backed table) and new DAC must have designated module prefix, e.g MYxYourDAC or MYPExPMSetup, where MY prefix is your unique ISV code
+4. Cache extension names MUST end with the extended table, e.g MYxPMSetup (PMSetup is the original table)
+5. Graphs -> ProjectMaint.cs No need for a prefix; it is already in the namespace of the project. If you MUST use to letters of your nominated ISV code, e.g [PE]ProjectMaint
+6. User-defined fields MUST have a designated prefix in the name, e.g `UsrMYxClaimNbrAttributeID`
 
 ### Optimizations
 Set the following keys in the `<appSettings>` section of the web.config to reduce start times
@@ -54,26 +67,6 @@ Set the following keys in the `<appSettings>` section of the web.config to reduc
 <add key="DisableScheduleProcessor" value="True" />
 <add key="CompilePages" value="False" />
 ```
-### Build Customization Package using CLI
-To produce customization package locally do the following
-- Option 1 -  Using .NET Tool
-  - Restore the tool NuGet packages `dotnet tool restore`
-  - Execute the tool `dotnet cake` or `dotnet cake --PackageVersion=<version>`
-- Option 2 - Using bootstrap script. See (Here)[https://cakebuild.net/docs/running-builds/runners/dotnet-tool#bootstrapping-for.net-tool] for more info.
-  - Configure path to the MYOB Advance site by environment variable SITE_DIR. e.g. `SET SITE_DIR=<path-to-site>`
-  - From the root directory for this customizations run `.\build.ps1` or `.\build.ps` --PackageVersion=<version>`
-
-### Running Unit Tests
-- Run unitest `dotnet cake --target=UnitTests` or `.\build.ps1 -Target UnitTests`
-
-## Conventions
-1. Graph Extensions - go to Extentions\PMProjectMaintExt
-2. DACs & DAC Extentions -  DAC\MYPESetup, DAC\MYPEAPTran.  Note: NO need add namespace DAC segment to the namespace e.g `CompanyName.ProjectName.DAC`. Doing creates concise code and does not require unnecessary import of name space.
-3. Both cache extensions (virtual or with backed table) and new DAC must have designated module prefix e.g MYxYourDAC or MYPExPMSetup, where MY prefix is your unqiue ISV code
-4. Cache extensions names MUST end with the extended table e.g MYxPMSetup (PMSetup is the original table)
-5. Graphs -> ProjectMaint.cs No need for a prefix, in are already in the namespace of the project. If you MUST use to letters of your nominated ISV code e.g [PE]ProjectMaint
-6. User defined fields MUST have designated prefix in the name e.g `UsrMYxClaimNbrAttributeID`
-
 
 ### Examples
 
